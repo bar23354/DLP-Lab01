@@ -1,6 +1,8 @@
 #entrada principal del programa
 
-from laboratorio.analizador import prepararExpresion
+import sys
+
+from laboratorio.analizador import formatearSimbolo, formatearTokens, prepararExpresion
 from laboratorio.arbol import construirArbolDirecto
 from laboratorio.construccion_afd import construirAfd
 from laboratorio.simulador import simularAfd
@@ -10,9 +12,9 @@ from laboratorio.tabla import mostrarTabla, mostrarDetalle
 def procesarRegex(expresion):
     print(f'\nExpresion regular: {expresion}')
     postfijo, alfa, infijo = prepararExpresion(expresion)
-    print(f'Con concatenacion explicita: {" ".join(infijo)}')
-    print(f'Postfijo: {" ".join(postfijo)}')
-    print(f'Alfabeto: {{{", ".join(alfa)}}}')
+    print(f'Con concatenacion explicita: {" ".join(formatearTokens(infijo))}')
+    print(f'Postfijo: {" ".join(formatearTokens(postfijo))}')
+    print(f'Alfabeto: {{{", ".join(formatearSimbolo(symbol) for symbol in alfa)}}}')
 
     raiz, hojas = construirArbolDirecto(postfijo)
     afd = construirAfd(raiz, hojas, alfa)
@@ -31,6 +33,11 @@ def validarCadena(afd):
 
 
 def main():
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8')
+
     print('=' * 55)
     print('  Conversion Directa de Expresion Regular a AFD')
     print('=' * 55)

@@ -1,4 +1,7 @@
-#visualizacion de la tabla de transiciones y detalles de la construccion
+# visualizacion de la tabla de transiciones y detalles de la construccion
+
+from laboratorio.analizador import formatearSimbolo, formatearToken
+
 
 def mostrarTabla(afd):
     estados = afd['estados']
@@ -7,10 +10,11 @@ def mostrarTabla(afd):
     acept = afd['estadosAceptacion']
     ini = afd['estadoInicial']
 
-    anchoEst = max(len(e) for e in estados) + 4
-    anchoCol = max(max((len(s) for s in alfa), default=3), 6) + 2
+    alfa_formateado = [formatearSimbolo(symbol) for symbol in alfa]
+    anchoEst = max(len(estado) for estado in estados) + 4
+    anchoCol = max(max((len(symbol) for symbol in alfa_formateado), default=3), 6) + 2
 
-    enc = 'Estado'.ljust(anchoEst) + ''.join(s.center(anchoCol) for s in alfa) + '  Tipo'
+    enc = 'Estado'.ljust(anchoEst) + ''.join(symbol.center(anchoCol) for symbol in alfa_formateado) + '  Tipo'
     sep = '-' * len(enc)
 
     print('\n' + sep)
@@ -19,23 +23,26 @@ def mostrarTabla(afd):
     print(enc)
     print(sep)
 
-    for est in estados:
-        marca = ('->' if est == ini else '') + ('*' if est in acept else '')
-        fila = (marca + est).ljust(anchoEst)
-        fila += ''.join(trans.get(est, {}).get(s, '-').center(anchoCol) for s in alfa)
-        tipo = ''
-        if est == ini and est in acept:
+    for estado in estados:
+        marca = ('->' if estado == ini else '') + ('*' if estado in acept else '')
+        fila = (marca + estado).ljust(anchoEst)
+        for symbol in alfa:
+            fila += trans.get(estado, {}).get(symbol, '-').center(anchoCol)
+
+        if estado == ini and estado in acept:
             tipo = 'Inicio/Aceptacion'
-        elif est == ini:
+        elif estado == ini:
             tipo = 'Inicio'
-        elif est in acept:
+        elif estado in acept:
             tipo = 'Aceptacion'
+        else:
+            tipo = ''
         print(fila + '  ' + tipo)
 
     print(sep)
     print(f'  Total de estados: {len(estados)}')
-    print(f'  Estados de aceptacion: {", ".join(sorted(acept, key=lambda x: int(x[1:])))}')
-    print(f'  Alfabeto: {{{", ".join(alfa)}}}')
+    print(f'  Estados de aceptacion: {", ".join(sorted(acept, key=lambda estado: int(estado[1:])))}')
+    print(f'  Alfabeto: {{{", ".join(alfa_formateado)}}}')
     print(sep + '\n')
 
 
@@ -44,14 +51,13 @@ def mostrarDetalle(hojas, afd):
     print(f'{"Pos":<6}{"Simbolo":<10}{"SiguientePos"}')
     print('-' * 40)
     for hid in sorted(hojas.keys()):
-        h = hojas[hid]
-        sig = '{' + ', '.join(str(x) for x in sorted(h.siguientePos)) + '}'
-        print(f'{hid:<6}{repr(h.valor):<10}{sig}')
+        hoja = hojas[hid]
+        siguiente = '{' + ', '.join(str(x) for x in sorted(hoja.siguientePos)) + '}'
+        print(f'{hid:<6}{formatearToken(hoja.valor):<10}{siguiente}')
     print()
 
     print('--- Conjuntos de posiciones por estado ---')
-    conj = afd['conjuntos']
-    for nom in sorted(conj.keys(), key=lambda x: int(x[1:])):
-        pos = '{' + ', '.join(str(x) for x in sorted(conj[nom])) + '}'
-        print(f'  {nom}: {pos}')
+    for nombre in sorted(afd['conjuntos'].keys(), key=lambda estado: int(estado[1:])):
+        posiciones = '{' + ', '.join(str(x) for x in sorted(afd['conjuntos'][nombre])) + '}'
+        print(f'  {nombre}: {posiciones}')
     print()
