@@ -1,44 +1,15 @@
 # Laboratorio 01 - Conversion directa de expresion regular a AFD
 
-Este proyecto implementa la parte actual del laboratorio:
+Diego Lopez #23747
+Jennifer Toxcon #21276
+Roberto Barreda #23354
+
+Este proyecto implementa:
 
 - ingreso de una expresion regular
 - construccion directa de un AFD a partir de la expresion
 - generacion de la tabla de transiciones
 - simulacion del AFD para validar cadenas
-
-No se usa `re` ni otra libreria de expresiones regulares. Toda la logica es propia.
-
-## Estado actual
-
-Para el alcance de esta entrega, la parte de conversion directa a AFD y simulacion ya esta funcional.
-
-Hoy el proyecto permite:
-
-- construir el arbol sintactico aumentado
-- calcular `anulable`, `primeraPos`, `ultimaPos` y `siguientePos`
-- construir el AFD directo
-- mostrar la tabla de transiciones
-- validar si una cadena es aceptada o rechazada
-- manejar errores comunes en expresiones regulares invalidas
-- soportar escapes de operadores y el simbolo `e` griega `ε`
-
-Fuera de alcance por ahora:
-
-- clases de caracteres tipo `[]`
-- sintaxis Yalex/Yapar dentro de `laboratorio`
-- minimizacion del AFD
-
-## Estructura principal
-
-- [`main.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\main.py): menu interactivo principal
-- [`programa_afd.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\programa_afd.py): entrada alternativa con el mismo flujo
-- [`laboratorio/analizador.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\analizador.py): tokenizacion, validacion, concatenacion explicita y postfijo
-- [`laboratorio/arbol.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\arbol.py): arbol directo y `siguientePos`
-- [`laboratorio/construccion_afd.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\construccion_afd.py): construccion del AFD
-- [`laboratorio/simulador.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\simulador.py): simulacion del AFD
-- [`laboratorio/tabla.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\tabla.py): detalle por posicion y tabla de transiciones
-- [`tests/`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\tests): pruebas unitarias e integracion con `pytest`
 
 ## Operadores soportados
 
