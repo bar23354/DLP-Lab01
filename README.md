@@ -1,131 +1,162 @@
-## Conversión directa de expresión regular a AFD
+# Laboratorio 01 - Conversion directa de expresion regular a AFD
 
-Este Laboratorio 01 implementa el **método directo** para construir un **autómata finito determinista (AFD)** a partir de una **expresión regular**, genera la **tabla de transición de estados** y permite **validar cadenas** usando el AFD construido.
+Este proyecto implementa la parte actual del laboratorio:
 
-No se utilizan librerías de expresiones regulares (`re` u otras); toda la conversión y simulación se realiza manualmente.
+- ingreso de una expresion regular
+- construccion directa de un AFD a partir de la expresion
+- generacion de la tabla de transiciones
+- simulacion del AFD para validar cadenas
 
----
+No se usa `re` ni otra libreria de expresiones regulares. Toda la logica es propia.
 
-## Requisitos que cumple el laboratorio
+## Estado actual
 
-- **Ingreso de expresión regular**:  
-  El programa principal (`main.py` / `programa_afd.py`) pide al usuario una expresión regular por consola.
+Para el alcance de esta entrega, la parte de conversion directa a AFD y simulacion ya esta funcional.
 
-- **Construcción del AFD por método directo**:  
-  - `laboratorio/analizador.py`: tokeniza la expresión, inserta concatenación explícita y la convierte a postfijo.  
-  - `laboratorio/arbol.py`: construye el árbol sintáctico, calcula `anulable`, `primeraPos`, `ultimaPos` y `siguientePos` (algoritmo directo por posiciones).  
-  - `laboratorio/construccion_afd.py`: a partir del árbol aumentado con `#` construye directamente el AFD (conjuntos de posiciones → estados `S0, S1, ...`).
+Hoy el proyecto permite:
 
-- **Generación de tabla de transición**:  
-  - `laboratorio/tabla.py`: muestra en consola la **tabla de transiciones del AFD**, indicando estado inicial, estados de aceptación y alfabeto.
+- construir el arbol sintactico aumentado
+- calcular `anulable`, `primeraPos`, `ultimaPos` y `siguientePos`
+- construir el AFD directo
+- mostrar la tabla de transiciones
+- validar si una cadena es aceptada o rechazada
+- manejar errores comunes en expresiones regulares invalidas
+- soportar escapes de operadores y el simbolo `e` griega `ε`
 
-- **Validación de cadenas con el AFD**:  
-  - `laboratorio/simulador.py`: simula el recorrido del AFD sobre una cadena dada.  
-  - `main.py`: permite ingresar cadenas, ver el recorrido de estados y decide si son **ACEPTADAS** o **RECHAZADAS**.
+Fuera de alcance por ahora:
 
-- **Operadores soportados**:
-  - Unión: `|`
-  - Concatenación: implícita (el analizador inserta `.` internamente)
-  - Cerradura de Kleene: `*`
-  - Cerradura positiva: `+`
-  - Opcional: `?`
-  - Agrupación: `(` `)`
-  - Escape: `\` para usar un carácter literal (por ejemplo `\*`, `\|`, `\?`, etc.)
+- clases de caracteres tipo `[]`
+- sintaxis Yalex/Yapar dentro de `laboratorio`
+- minimizacion del AFD
 
-- **Sin librerías de regex**:  
-  Se ha verificado que en el código **no se importa `re` ni ninguna otra librería de expresiones regulares**; toda la lógica es propia.
+## Estructura principal
 
----
+- [`main.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\main.py): menu interactivo principal
+- [`programa_afd.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\programa_afd.py): entrada alternativa con el mismo flujo
+- [`laboratorio/analizador.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\analizador.py): tokenizacion, validacion, concatenacion explicita y postfijo
+- [`laboratorio/arbol.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\arbol.py): arbol directo y `siguientePos`
+- [`laboratorio/construccion_afd.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\construccion_afd.py): construccion del AFD
+- [`laboratorio/simulador.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\simulador.py): simulacion del AFD
+- [`laboratorio/tabla.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\tabla.py): detalle por posicion y tabla de transiciones
+- [`tests/`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\tests): pruebas unitarias e integracion con `pytest`
 
-## Estructura del proyecto
+## Operadores soportados
 
-- `main.py` / `programa_afd.py`: programa principal, menú interactivo.
-- `laboratorio/analizador.py`: tokenización, inserción de concatenación y conversión a notación postfija.
-- `laboratorio/arbol.py`: construcción del árbol sintáctico y cálculo de `siguientePos`.
-- `laboratorio/construccion_afd.py`: construcción del AFD mediante el método directo por posiciones.
-- `laboratorio/tabla.py`: impresión de la tabla de transición y detalle de conjuntos de posiciones.
-- `laboratorio/simulador.py`: simulación del AFD sobre una cadena.
+- Union: `|`
+- Concatenacion: implicita, el programa inserta `.` internamente
+- Cerradura de Kleene: `*`
+- Cerradura positiva: `+`
+- Opcional: `?`
+- Agrupacion: `(` y `)`
+- Escape: `\` para tratar un operador como literal, por ejemplo `\*`, `\|`, `\(`, `\)`
+- Epsilon: `ε`
 
----
+Notas:
 
-## Ejecución
+- `ε` representa cadena vacia
+- `\ε` representa el simbolo literal `ε`
 
-1. Asegurarse de tener **Python 3** instalado.
-2. Abrir una terminal en la carpeta del proyecto (`DLP-Lab01`).
-3. Ejecutar:
+## Requisitos
+
+- Python 3
+- `pytest` para correr la suite de pruebas
+
+## Como ejecutarlo
+
+Desde la carpeta raiz del proyecto:
 
 ```bash
 python main.py
 ```
 
-o bien:
+O bien:
 
 ```bash
 python programa_afd.py
 ```
 
-Según el archivo que se utilice como entrada principal.
+## Flujo de uso
 
----
+1. Ejecutar `python main.py`
+2. Elegir opcion `1`
+3. Ingresar una expresion regular
+4. El programa muestra:
+   - expresion con concatenacion explicita
+   - expresion en postfijo
+   - alfabeto detectado
+   - detalle de `siguientePos`
+   - conjuntos de posiciones por estado
+   - tabla de transiciones del AFD
+5. Luego se puede:
+   - validar una cadena
+   - volver a mostrar la tabla
+   - regresar al menu principal
 
-## Uso del programa
+## Ejemplos recomendados para la demo
 
-Al ejecutar `main.py` se muestra un menú:
+Estas expresiones ya estan cubiertas por la implementacion actual:
 
-- **[1] Nueva expresión**: permite ingresar una expresión regular.
-- **[2] Salir**: termina el programa.
+- `a(b|c)*`
+- `ab+c?`
+- `(a|b)*c+d?`
 
-Flujo típico:
+Tambien se pueden mostrar estos casos utiles:
 
-1. Elegir opción **1**.
-2. Ingresar la **expresión regular** (por ejemplo: `a(b|c)*d+?`).
-   - El programa mostrará:
-     - Expresión con concatenación explícita.
-     - Forma en postfijo.
-     - Alfabeto detectado.
-     - Detalle de `siguientePos` y conjuntos de posiciones por estado.
-     - Tabla de transición del AFD resultante.
-3. Luego aparece un submenú:
-   - **[a] Validar cadena**: permite ingresar una cadena y muestra:
-     - La cadena ingresada.
-     - El recorrido de estados del AFD.
-     - Si la cadena es **ACEPTADA** o **RECHAZADA**.
-   - **[b] Ver tabla**: vuelve a mostrar la tabla de transiciones del AFD actual.
-   - **[c] Volver**: regresar al menú principal para ingresar otra expresión o salir.
+- `a?`
+- `ε`
+- `a\*b`
+- `(a|ε)b`
 
----
+Ejemplos de cadenas:
 
-## Ejemplos de expresiones para la demostración
+- Para `a(b|c)*`
+  - aceptada: `acbc`
+  - rechazada: `ad`
+- Para `ab+c?`
+  - aceptada: `abbc`
+  - rechazada: `ac`
+- Para `(a|b)*c+d?`
+  - aceptada: `bbccd`
+  - rechazada: `ab`
 
-Se requieren **al menos tres expresiones regulares** donde, en conjunto, aparezcan todos los operadores `|`, concatenación implícita, `*`, `+`, `?`.
+## Como correr los tests
 
-Algunas posibles expresiones de ejemplo:
+Desde la raiz del proyecto:
 
-- **Expresión 1** (usa unión y `*`):
-  - `a(b|c)*`
+```bash
+pytest -q
+```
 
-- **Expresión 2** (usa concatenación, `+` y `?`):
-  - `ab+c?`
+La suite actual incluye:
 
-- **Expresión 3** (usa todos los operadores y agrupación):
-  - `(a|b)*c+d?`
+- pruebas unitarias del analizador
+- pruebas del arbol y del AFD
+- pruebas de integracion del pipeline completo
+- regresiones para escapes, `ε` y expresiones invalidas
 
-Para cumplir con el requisito del enunciado, durante la demostración:
+## Casos validados
 
-- **Ingresar y validar** una cadena que **sí** pertenezca al lenguaje de cada expresión.
-- **Ingresar y validar** una cadena que **no** pertenezca al lenguaje de alguna expresión.
-- Mostrar la **tabla de transición** del AFD para al menos una de las expresiones (el programa ya lo hace automáticamente).
+Se validaron automaticamente, entre otros, los siguientes casos:
 
----
+- construccion correcta del pipeline para expresiones validas
+- aceptacion y rechazo de cadenas
+- soporte de `ε`
+- soporte de operadores escapados como literales
+- rechazo de expresiones invalidas como:
+  - `a(`
+  - `(a|b`
+  - `a|`
+  - `*a`
+  - `\`
+  - `()`
 
-## Notas sobre la implementación
+## Conclusion
 
-- La concatenación es **implícita** en la expresión del usuario; internamente el analizador inserta el operador `.` donde corresponde.
-- El método directo se implementa siguiendo el enfoque por **posiciones** (`primeraPos`, `ultimaPos`, `siguientePos`) y luego construyendo el AFD como autómata de subconjuntos de posiciones.
-- El marcador `#` se añade automáticamente al final de la expresión interna para identificar los **estados de aceptación**.
+Para lo que pide actualmente el ejercicio, esta parte ya esta cubierta:
 
----
+- expresion regular de entrada
+- construccion del AFD por metodo directo
+- tabla de transiciones
+- validacion de cadenas con el AFD
 
-## Créditos
-
-Proyecto desarrollado como laboratorio de **Diseño de Lenguajes de Programación** para la construcción directa de AFD a partir de expresiones regulares.
+La base tambien quedo organizada para futuras entregas, sin depender del codigo mezclado en `temp`.
