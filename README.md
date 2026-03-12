@@ -4,6 +4,8 @@ Diego Lopez #23747
 Jennifer Toxcon #21276
 Roberto Barreda #23354
 
+### VIDEO: https://uvggt-my.sharepoint.com/:v:/g/personal/bar23354_uvg_edu_gt/IQCg4thh7dhQR7QW2jdnh1i-ASE2x7gNW8zekyacpMGvQbg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=3uMfPJ
+
 Este proyecto implementa:
 
 - ingreso de una expresion regular
