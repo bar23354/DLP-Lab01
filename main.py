@@ -5,8 +5,9 @@ import sys
 from laboratorio.analizador import formatearSimbolo, formatearTokens, prepararExpresion
 from laboratorio.arbol import construirArbolDirecto
 from laboratorio.construccion_afd import construirAfd
+from laboratorio.minimizacion import minimizarAfd
 from laboratorio.simulador import simularAfd
-from laboratorio.tabla import mostrarTabla, mostrarDetalle
+from laboratorio.tabla import mostrarComparacion, mostrarDetalle, mostrarDetalleMinimizacion, mostrarTabla
 
 
 def procesarRegex(expresion):
@@ -17,10 +18,14 @@ def procesarRegex(expresion):
     print(f'Alfabeto: {{{", ".join(formatearSimbolo(symbol) for symbol in alfa)}}}')
 
     raiz, hojas = construirArbolDirecto(postfijo)
-    afd = construirAfd(raiz, hojas, alfa)
-    mostrarDetalle(hojas, afd)
-    mostrarTabla(afd)
-    return afd
+    afd_directo = construirAfd(raiz, hojas, alfa)
+    afd_minimizado = minimizarAfd(afd_directo)
+    mostrarDetalle(hojas, afd_directo, titulo='AFD directo')
+    mostrarTabla(afd_directo, titulo='AFD DIRECTO')
+    mostrarDetalleMinimizacion(afd_minimizado)
+    mostrarTabla(afd_minimizado, titulo='AFD MINIMIZADO')
+    mostrarComparacion(afd_directo, afd_minimizado)
+    return afd_directo, afd_minimizado
 
 
 def validarCadena(afd):
@@ -53,18 +58,25 @@ def main():
                 print('Error: expresion vacia.')
                 continue
             try:
-                afd = procesarRegex(expresion)
+                afd_directo, afd_minimizado = procesarRegex(expresion)
             except Exception as e:
                 print(f'Error: {e}')
                 continue
 
             while True:
-                sub = input('\n  [a] Validar cadena  [b] Ver tabla  [c] Volver : ').strip().lower()
+                sub = input(
+                    '\n  [a] Validar con AFD minimizado  [b] Ver tabla directa  '
+                    '[c] Ver tabla minimizada  [d] Ver comparacion  [e] Volver : '
+                ).strip().lower()
                 if sub == 'a':
-                    validarCadena(afd)
+                    validarCadena(afd_minimizado)
                 elif sub == 'b':
-                    mostrarTabla(afd)
+                    mostrarTabla(afd_directo, titulo='AFD DIRECTO')
                 elif sub == 'c':
+                    mostrarTabla(afd_minimizado, titulo='AFD MINIMIZADO')
+                elif sub == 'd':
+                    mostrarComparacion(afd_directo, afd_minimizado)
+                elif sub == 'e':
                     break
 
         elif opcion == '2':
