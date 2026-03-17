@@ -1,9 +1,21 @@
 # visualizacion de la tabla de transiciones y detalles de la construccion
 
 from laboratorio.analizador import formatearSimbolo, formatearToken
+from laboratorio.minimizacion import contarMetricas
 
 
-def mostrarTabla(afd):
+def _indice_estado(estado):
+    try:
+        return int(estado[1:])
+    except (ValueError, IndexError):
+        return estado
+
+
+def _ordenar_estados(estados):
+    return sorted(estados, key=_indice_estado)
+
+
+def mostrarTabla(afd, titulo='AFD'):
     estados = afd['estados']
     alfa = afd['alfabeto']
     trans = afd['transiciones']
@@ -18,7 +30,7 @@ def mostrarTabla(afd):
     sep = '-' * len(enc)
 
     print('\n' + sep)
-    print('  TABLA DE TRANSICIONES DEL AFD')
+    print(f'  TABLA DE TRANSICIONES DEL {titulo}')
     print(sep)
     print(enc)
     print(sep)
@@ -39,14 +51,16 @@ def mostrarTabla(afd):
             tipo = ''
         print(fila + '  ' + tipo)
 
+    metricas = contarMetricas(afd)
     print(sep)
-    print(f'  Total de estados: {len(estados)}')
-    print(f'  Estados de aceptacion: {", ".join(sorted(acept, key=lambda estado: int(estado[1:])))}')
+    print(f'  Total de estados: {metricas["estados"]}')
+    print(f'  Total de transiciones: {metricas["transiciones"]}')
+    print(f'  Estados de aceptacion: {", ".join(_ordenar_estados(acept))}')
     print(f'  Alfabeto: {{{", ".join(alfa_formateado)}}}')
     print(sep + '\n')
 
 
-def mostrarDetalle(hojas, afd):
+def mostrarDetalle(hojas, afd, titulo='AFD directo'):
     print('\n--- Detalle del calculo por posicion ---')
     print(f'{"Pos":<6}{"Simbolo":<10}{"SiguientePos"}')
     print('-' * 40)
@@ -56,8 +70,32 @@ def mostrarDetalle(hojas, afd):
         print(f'{hid:<6}{formatearToken(hoja.valor):<10}{siguiente}')
     print()
 
-    print('--- Conjuntos de posiciones por estado ---')
-    for nombre in sorted(afd['conjuntos'].keys(), key=lambda estado: int(estado[1:])):
+    print(f'--- Conjuntos de posiciones por estado ({titulo}) ---')
+    for nombre in _ordenar_estados(afd['conjuntos'].keys()):
         posiciones = '{' + ', '.join(str(x) for x in sorted(afd['conjuntos'][nombre])) + '}'
         print(f'  {nombre}: {posiciones}')
+    print()
+
+
+def mostrarDetalleMinimizacion(afd):
+    print('\n--- Estados del AFD minimizado ---')
+    for nombre in _ordenar_estados(afd['conjuntos'].keys()):
+        estados_originales = '{' + ', '.join(_ordenar_estados(afd['conjuntos'][nombre])) + '}'
+        print(f'  {nombre}: {estados_originales}')
+    print()
+
+
+def mostrarComparacion(afd_directo, afd_minimizado):
+    metricas_directo = contarMetricas(afd_directo)
+    metricas_min = contarMetricas(afd_minimizado)
+
+    print('\n--- Comparacion de automatas ---')
+    print(f'  AFD directo     -> estados: {metricas_directo["estados"]}, transiciones: {metricas_directo["transiciones"]}')
+    print(f'  AFD minimizado  -> estados: {metricas_min["estados"]}, transiciones: {metricas_min["transiciones"]}')
+    print(
+        '  Reduccion       -> estados: '
+        f'{metricas_directo["estados"] - metricas_min["estados"]}, '
+        'transiciones: '
+        f'{metricas_directo["transiciones"] - metricas_min["transiciones"]}'
+    )
     print()

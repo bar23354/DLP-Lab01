@@ -1,6 +1,13 @@
 from collections import defaultdict
 
 
+def contarMetricas(afd):
+    return {
+        'estados': len(afd['estados']),
+        'transiciones': sum(len(transiciones) for transiciones in afd['transiciones'].values()),
+    }
+
+
 def _indice_estado(estado):
     try:
         return int(estado[1:])
