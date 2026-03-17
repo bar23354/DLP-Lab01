@@ -1,44 +1,50 @@
-# Laboratorio 01 - Conversion directa de expresion regular a AFD
+# Laboratorio 02 - Conversion directa y minimizacion de AFD
 
-Este proyecto implementa la parte actual del laboratorio:
+Este proyecto implementa la parte actual del curso para:
 
-- ingreso de una expresion regular
-- construccion directa de un AFD a partir de la expresion
-- generacion de la tabla de transiciones
-- simulacion del AFD para validar cadenas
+- ingresar una expresion regular
+- construir el AFD por metodo directo
+- minimizar el AFD resultante
+- mostrar la tabla de transiciones del AFD directo
+- mostrar la tabla de transiciones del AFD minimizado
+- comparar cantidad de estados y transiciones
+- validar cadenas usando el AFD minimizado
 
-No se usa `re` ni otra libreria de expresiones regulares. Toda la logica es propia.
+No se usa `re` ni otra libreria de expresiones regulares.
 
 ## Estado actual
 
-Para el alcance de esta entrega, la parte de conversion directa a AFD y simulacion ya esta funcional.
+La base activa del proyecto esta en [`laboratorio`](./laboratorio) y ya cubre lo principal de Lab 1 y Lab 2.
 
 Hoy el proyecto permite:
 
 - construir el arbol sintactico aumentado
 - calcular `anulable`, `primeraPos`, `ultimaPos` y `siguientePos`
 - construir el AFD directo
-- mostrar la tabla de transiciones
-- validar si una cadena es aceptada o rechazada
+- minimizar el AFD
+- mostrar ambas tablas
+- comparar estados y transiciones entre ambos automatas
+- validar cadenas con el AFD minimizado
 - manejar errores comunes en expresiones regulares invalidas
-- soportar escapes de operadores y el simbolo `e` griega `ε`
+- soportar escapes de operadores y `ε`
 
 Fuera de alcance por ahora:
 
 - clases de caracteres tipo `[]`
 - sintaxis Yalex/Yapar dentro de `laboratorio`
-- minimizacion del AFD
+- interfaz grafica
 
 ## Estructura principal
 
-- [`main.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\main.py): menu interactivo principal
-- [`programa_afd.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\programa_afd.py): entrada alternativa con el mismo flujo
-- [`laboratorio/analizador.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\analizador.py): tokenizacion, validacion, concatenacion explicita y postfijo
-- [`laboratorio/arbol.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\arbol.py): arbol directo y `siguientePos`
-- [`laboratorio/construccion_afd.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\construccion_afd.py): construccion del AFD
-- [`laboratorio/simulador.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\simulador.py): simulacion del AFD
-- [`laboratorio/tabla.py`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\laboratorio\tabla.py): detalle por posicion y tabla de transiciones
-- [`tests/`](C:\Users\djlop\OneDrive\DIEGO\UVG\2026\primer semestre\Diseño de Lenguajes de Programación\DLP-Lab01\tests): pruebas unitarias e integracion con `pytest`
+- [`main.py`](./main.py): menu interactivo principal
+- [`programa_afd.py`](./programa_afd.py): entrada alternativa
+- [`laboratorio/analizador.py`](./laboratorio/analizador.py): tokenizacion, validacion, concatenacion explicita y postfijo
+- [`laboratorio/arbol.py`](./laboratorio/arbol.py): arbol directo y `siguientePos`
+- [`laboratorio/construccion_afd.py`](./laboratorio/construccion_afd.py): construccion del AFD directo
+- [`laboratorio/minimizacion.py`](./laboratorio/minimizacion.py): minimizacion y metricas
+- [`laboratorio/simulador.py`](./laboratorio/simulador.py): simulacion del AFD
+- [`laboratorio/tabla.py`](./laboratorio/tabla.py): tablas, detalles y comparacion
+- [`tests/`](./tests): pruebas unitarias e integracion con `pytest`
 
 ## Operadores soportados
 
@@ -84,40 +90,17 @@ python programa_afd.py
    - expresion con concatenacion explicita
    - expresion en postfijo
    - alfabeto detectado
-   - detalle de `siguientePos`
-   - conjuntos de posiciones por estado
-   - tabla de transiciones del AFD
+   - detalle de `siguientePos` y conjuntos del AFD directo
+   - tabla del AFD directo
+   - detalle de estados del AFD minimizado
+   - tabla del AFD minimizado
+   - comparacion de estados y transiciones
 5. Luego se puede:
-   - validar una cadena
-   - volver a mostrar la tabla
+   - validar una cadena con el AFD minimizado
+   - volver a ver la tabla directa
+   - volver a ver la tabla minimizada
+   - volver a ver la comparacion
    - regresar al menu principal
-
-## Ejemplos recomendados para la demo
-
-Estas expresiones ya estan cubiertas por la implementacion actual:
-
-- `a(b|c)*`
-- `ab+c?`
-- `(a|b)*c+d?`
-
-Tambien se pueden mostrar estos casos utiles:
-
-- `a?`
-- `ε`
-- `a\*b`
-- `(a|ε)b`
-
-Ejemplos de cadenas:
-
-- Para `a(b|c)*`
-  - aceptada: `acbc`
-  - rechazada: `ad`
-- Para `ab+c?`
-  - aceptada: `abbc`
-  - rechazada: `ac`
-- Para `(a|b)*c+d?`
-  - aceptada: `bbccd`
-  - rechazada: `ab`
 
 ## Como correr los tests
 
@@ -127,19 +110,47 @@ Desde la raiz del proyecto:
 pytest -q
 ```
 
-La suite actual incluye:
+La suite actual cubre:
 
-- pruebas unitarias del analizador
-- pruebas del arbol y del AFD
-- pruebas de integracion del pipeline completo
-- regresiones para escapes, `ε` y expresiones invalidas
+- analizador
+- arbol y AFD directo
+- minimizacion
+- equivalencia entre AFD directo y minimizado
+- integracion del pipeline completo
+- errores de expresiones invalidas
+- edge cases con `ε`, escapes y automatas ya minimos
+
+## Expresiones recomendadas para la demo de Lab 2
+
+Caso que ya es minimo:
+
+- Expresion: `a(b|c)*`
+- Cadena aceptada: `acbc`
+- Cadena rechazada: `ad`
+
+Comportamiento esperado:
+
+- AFD directo y minimizado tienen la misma cantidad de estados
+- AFD directo y minimizado tienen la misma cantidad de transiciones
+
+Caso que si se reduce:
+
+- Expresion: `(a|b)*(aa|ab|ba|bb)`
+- Cadena aceptada: `abba`
+- Cadena rechazada: `a`
+
+Comportamiento esperado:
+
+- el AFD minimizado tiene menos estados que el AFD directo
+- el AFD minimizado tiene menos transiciones que el AFD directo
 
 ## Casos validados
 
 Se validaron automaticamente, entre otros, los siguientes casos:
 
-- construccion correcta del pipeline para expresiones validas
-- aceptacion y rechazo de cadenas
+- AFD que ya es minimo
+- AFD que si se reduce con minimizacion
+- aceptacion y rechazo de cadenas en AFD directo y minimizado
 - soporte de `ε`
 - soporte de operadores escapados como literales
 - rechazo de expresiones invalidas como:
@@ -152,11 +163,12 @@ Se validaron automaticamente, entre otros, los siguientes casos:
 
 ## Conclusion
 
-Para lo que pide actualmente el ejercicio, esta parte ya esta cubierta:
+Para lo que pide actualmente Lab 2, esta base ya esta orientada a:
 
 - expresion regular de entrada
 - construccion del AFD por metodo directo
-- tabla de transiciones
-- validacion de cadenas con el AFD
-
-La base tambien quedo organizada para futuras entregas, sin depender del codigo mezclado en `temp`.
+- minimizacion del AFD
+- tabla del AFD directo
+- tabla del AFD minimizado
+- comparacion de estados y transiciones
+- validacion de cadenas con el AFD minimizado
