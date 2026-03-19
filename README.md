@@ -161,6 +161,10 @@ Se validaron automaticamente, entre otros, los siguientes casos:
   - `\`
   - `()`
 
+## Video - Laboratorio 2
+
+Enlace al video de Lab 2: [Laboratorio2.mp4](https://uvggt-my.sharepoint.com/:v:/r/personal/tox21276_uvg_edu_gt/Documents/Lab2.mp4?csf=1&web=1&e=D1TdTz&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D)
+
 ## Conclusion
 
 Para lo que pide actualmente Lab 2, esta base ya esta orientada a:
