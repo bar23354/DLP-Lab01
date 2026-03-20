@@ -1,34 +1,24 @@
 # Laboratorio 02 - Conversion directa y minimizacion de AFD
 
-Este proyecto implementa la parte actual del curso para:
+Programa en consola para:
 
 - ingresar una expresion regular
 - construir el AFD por metodo directo
-- minimizar el AFD resultante
-- mostrar la tabla de transiciones del AFD directo
-- mostrar la tabla de transiciones del AFD minimizado
-- comparar cantidad de estados y transiciones
-- validar cadenas usando el AFD minimizado
-
-No se usa `re` ni otra libreria de expresiones regulares.
-
-## Estado actual
-
-La base activa del proyecto esta en [`laboratorio`](./laboratorio) y ya cubre lo principal de Lab 1 y Lab 2.
-
-Hoy el proyecto permite:
-
-- construir el arbol sintactico aumentado
-- calcular `anulable`, `primeraPos`, `ultimaPos` y `siguientePos`
-- construir el AFD directo
 - minimizar el AFD
-- mostrar ambas tablas
-- comparar estados y transiciones entre ambos automatas
+- mostrar tablas de transicion (directo y minimizado)
+- comparar estados y transiciones
 - validar cadenas con el AFD minimizado
-- manejar errores comunes en expresiones regulares invalidas
-- soportar escapes de operadores y `ε`
 
-Fuera de alcance por ahora:
+## Alcance
+
+- arbol sintactico aumentado
+- calculo de `anulable`, `primeraPos`, `ultimaPos` y `siguientePos`
+- construccion de AFD directo
+- minimizacion
+- simulacion de cadenas
+- manejo de errores de expresiones invalidas
+
+No incluye:
 
 - clases de caracteres tipo `[]`
 - sintaxis Yalex/Yapar dentro de `laboratorio`
@@ -58,13 +48,12 @@ Fuera de alcance por ahora:
 - Epsilon: `ε`
 
 Notas:
-
 - `ε` representa cadena vacia
 - `\ε` representa el simbolo literal `ε`
 
 ## Requisitos
 
-- Python 3
+- Python
 - `pytest` para correr la suite de pruebas
 
 ## Como ejecutarlo
@@ -89,10 +78,8 @@ python programa_afd.py
 4. El programa muestra:
    - expresion con concatenacion explicita
    - expresion en postfijo
-   - alfabeto detectado
-   - detalle de `siguientePos` y conjuntos del AFD directo
+   - alfabeto
    - tabla del AFD directo
-   - detalle de estados del AFD minimizado
    - tabla del AFD minimizado
    - comparacion de estados y transiciones
 5. Luego se puede:
@@ -122,57 +109,39 @@ La suite actual cubre:
 
 ## Expresiones recomendadas para la demo de Lab 2
 
-Caso que ya es minimo:
+Caso ya minimo:
 
 - Expresion: `a(b|c)*`
 - Cadena aceptada: `acbc`
 - Cadena rechazada: `ad`
 
-Comportamiento esperado:
+Esperado:
 
 - AFD directo y minimizado tienen la misma cantidad de estados
 - AFD directo y minimizado tienen la misma cantidad de transiciones
 
-Caso que si se reduce:
+Caso que se reduce:
 
 - Expresion: `(a|b)*(aa|ab|ba|bb)`
 - Cadena aceptada: `abba`
 - Cadena rechazada: `a`
 
-Comportamiento esperado:
+Esperado:
 
 - el AFD minimizado tiene menos estados que el AFD directo
 - el AFD minimizado tiene menos transiciones que el AFD directo
 
 ## Casos validados
 
-Se validaron automaticamente, entre otros, los siguientes casos:
+Casos cubiertos por pruebas:
 
-- AFD que ya es minimo
-- AFD que si se reduce con minimizacion
-- aceptacion y rechazo de cadenas en AFD directo y minimizado
-- soporte de `ε`
-- soporte de operadores escapados como literales
-- rechazo de expresiones invalidas como:
-  - `a(`
-  - `(a|b`
-  - `a|`
-  - `*a`
-  - `\`
-  - `()`
+- AFD ya minimo
+- AFD reducible por minimizacion
+- equivalencia entre AFD directo y minimizado
+- aceptacion y rechazo de cadenas
+- soporte de `ε` y operadores escapados
+- rechazo de expresiones invalidas (`a(`, `(a|b`, `a|`, `*a`, `\`, `()`)
 
 ## Video - Laboratorio 2
 
 Enlace al video de Lab 2: [Laboratorio2.mp4](https://uvggt-my.sharepoint.com/:v:/r/personal/tox21276_uvg_edu_gt/Documents/Lab2.mp4?csf=1&web=1&e=D1TdTz&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D)
-
-## Conclusion
-
-Para lo que pide actualmente Lab 2, esta base ya esta orientada a:
-
-- expresion regular de entrada
-- construccion del AFD por metodo directo
-- minimizacion del AFD
-- tabla del AFD directo
-- tabla del AFD minimizado
-- comparacion de estados y transiciones
-- validacion de cadenas con el AFD minimizado
